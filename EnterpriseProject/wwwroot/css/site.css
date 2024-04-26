@@ -32,3 +32,17 @@ body {
 .carouselContainer {
     padding: 0 0 10px 0;
 }
+
+.jumbotronCardContainer {
+    padding: 0 0 40px 0;
+}
+
+.cardTitle {
+    color: #007FFF;
+    text-align: center;
+    padding: 0 0 20px 0;
+}
+
+.cardImage {
+    padding: 20px 0 0 0;
+}
