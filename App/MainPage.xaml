@@ -2,40 +2,66 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EnterpriseMarketplace.MainPage">
-
     <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+        <VerticalStackLayout Spacing="0" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+                <SearchBar Placeholder="Search Listings"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           HorizontalOptions="FillAndExpand" />
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+                <Picker Title="Filter"
+                        Grid.Column="1"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        WidthRequest="50" HeightRequest="50"
+                        Margin="10,0">
+                    <Picker.Items>
+                        <x:String>Category 1</x:String>
+                        <x:String>Category 2</x:String>
+                        <x:String>Category 3</x:String>
+                    </Picker.Items>
+                </Picker>
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                <Button Text="Search"
+                        Grid.Column="2"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        WidthRequest="90" HeightRequest="50"/>
+            </Grid>
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+            <FlexLayout Direction="Row" 
+                        JustifyContent="Start"
+                        AlignItems="Start"
+                        Wrap="Wrap">
+                <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
+                    <VerticalStackLayout Spacing="5">
+                        <Image Source="item1.jpg" Aspect="AspectFill" HeightRequest="100" />
+                        <Label Text="Sample Item 1" FontSize="Medium" />
+                        <Label Text="New York" FontSize="Small" />
+                        <Label Text="$19.99" FontSize="Medium" />
+                        <Button Text="Save" HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
+                    </VerticalStackLayout>
+                </Frame>
 
+                <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
+                    <VerticalStackLayout Spacing="5">
+                        <Image Source="item2.jpg" Aspect="AspectFill" HeightRequest="100" />
+                        <Label Text="Sample Item 2" FontSize="Medium" />
+                        <Label Text="Los Angeles" FontSize="Small" />
+                        <Label Text="$29.99" FontSize="Medium" />
+                        <Button Text="Save" HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </FlexLayout>
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

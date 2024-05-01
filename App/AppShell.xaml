@@ -4,11 +4,59 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:EnterpriseMarketplace"
-    Shell.FlyoutBehavior="Disabled">
+    BackgroundColor="{StaticResource PrimaryColor}"
+    FlyoutBehavior="Flyout"
+    Shell.FlyoutBackgroundColor="{StaticResource PrimaryColor}">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <StackLayout BackgroundColor="#008CBA">
+                <Label Text="What will you do?"
+                       FontSize="Large"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       Margin="0,10,0,10" />
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
 
+    <FlyoutItem Title="My Listings"
+                Route="MainPage"
+                Icon="listings_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Saved Listings"
+                Route="MainPage"
+                Icon="saved_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="All Listings"
+            Route="MainPage"
+            Icon="listings_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+
+    <Shell.TitleView>
+        <Grid BackgroundColor="{StaticResource PrimaryColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="EnterpriseApp"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   TextColor="White" />
+
+            <Button Text="Sign In"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    Grid.Column="1" />
+        </Grid>
+    </Shell.TitleView>
 </Shell>
