@@ -61,6 +61,21 @@ namespace TestEnterpriseProject
             //Assert
             Assert.Contains(text, contentString);
         }
+
+        [Theory]
+        [InlineData("About Enterprise Marketplace")]
+        public async Task TestOurMissionPageDisplaysText(string text) /* Testing to ensure that our mission page displays the about enterprise text */
+        {
+            //Arrange
+
+            //Act
+            var response = await _httpClient.GetAsync("/OurMission/Index");
+            var pageContent = await response.Content.ReadAsStringAsync();
+            var contentString = pageContent.ToString();
+
+            //Assert
+            Assert.Contains(text, contentString);
+        }
     }
 
 }
