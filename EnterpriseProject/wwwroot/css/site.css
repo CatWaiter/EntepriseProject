@@ -46,3 +46,11 @@ body {
 .cardImage {
     padding: 20px 0 0 0;
 }
+
+.aboutUsContainer {
+    padding: 0 0 40px 0;
+}
+
+.aboutUsText {
+    padding: 20px 0 20px 0;
+}
