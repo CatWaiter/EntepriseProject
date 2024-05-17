@@ -54,3 +54,11 @@ body {
 .aboutUsText {
     padding: 20px 0 20px 0;
 }
+
+.gridRowPadding {
+    padding: 0 0 30px 0;
+}
+
+.gridContainer {
+    padding: 40px 0 40px 0;
+}
