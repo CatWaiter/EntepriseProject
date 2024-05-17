@@ -8,5 +8,21 @@ namespace EnterpriseProject.Controllers
         {
             return View();
         }
+        public IActionResult Electronics()
+        {
+            return View();
+        }
+        public IActionResult Entertainment()
+        {
+            return View();
+        }
+        public IActionResult HomeImprovementSupplies()
+        {
+            return View();
+        }
+        public IActionResult SportingGoods()
+        {
+            return View();
+        }
     }
 }
