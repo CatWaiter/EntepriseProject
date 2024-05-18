@@ -76,6 +76,48 @@ namespace TestEnterpriseProject
             //Assert
             Assert.Contains(text, contentString);
         }
+
+        [Fact]
+        public async void TestElectronicsCategory() /* Ensuring that the Categories pages work properly */
+        {
+            //Arrange
+            var client = _factory.CreateClient();
+
+            //Act
+            var response = await client.GetAsync("/Categories/Electronics");
+            int code = (int)response.StatusCode;
+
+            //Assert
+            Assert.Equal(200, code);
+        }
+
+        [Fact]
+        public async void TestEntertainmentCategory() /* Ensuring that the Categories pages work properly */
+        {
+            //Arrange
+            var client = _factory.CreateClient();
+
+            //Act
+            var response = await client.GetAsync("/Categories/Entertainment");
+            int code = (int)response.StatusCode;
+
+            //Assert
+            Assert.Equal(200, code);
+        }
+
+        [Fact]
+        public async void TestHomeImprovementSuppliesCategory() /* Ensuring that the Categories pages work properly */
+        {
+            //Arrange
+            var client = _factory.CreateClient();
+
+            //Act
+            var response = await client.GetAsync("/Categories/HomeImprovementSupplies");
+            int code = (int)response.StatusCode;
+
+            //Assert
+            Assert.Equal(200, code);
+        }
     }
 
 }
