@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EnterpriseMarketplace.SavedListingsPage"
+             Title="Saved Listings">
+  <ScrollView>
+    <VerticalStackLayout Spacing="0" Padding="10">
+      <Label Text="Saved Listings" FontSize="Large" HorizontalOptions="Center"/>
+      <CollectionView x:Name="ListingsCollectionView">
+        <CollectionView.ItemsLayout>
+          <GridItemsLayout Orientation="Vertical" Span="2" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
+              <VerticalStackLayout Spacing="5">
+                <Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="100" />
+                <Label Text="{Binding Title}" FontSize="Medium" />
+                <Label Text="{Binding Location}" FontSize="Small" />
+                <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="Medium" />
+                <Button Text="Remove" HorizontalOptions="FillAndExpand"/>
+              </VerticalStackLayout>
+            </Frame>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </VerticalStackLayout>
+  </ScrollView>
+</ContentPage>

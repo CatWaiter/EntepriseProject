@@ -6,62 +6,54 @@
         <VerticalStackLayout Spacing="0" Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <SearchBar Placeholder="Search Listings"
+                <SearchBar x:Name="SearchBar" Placeholder="Search Listings"
                            Grid.Column="0"
                            VerticalOptions="Center"
-                           HorizontalOptions="FillAndExpand" />
+                           HorizontalOptions="FillAndExpand"
+                           TextChanged="OnSearchTextChanged"
+                           HeightRequest="40" />
 
-                <Picker Title="Filter"
+                <Picker x:Name="CategoryPicker" Title="Filter"
                         Grid.Column="1"
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
-                        WidthRequest="50" HeightRequest="50"
-                        Margin="10,0">
+                        WidthRequest="150" HeightRequest="40"
+                        Margin="10,0"
+                        SelectedIndexChanged="OnCategorySelectedIndexChanged">
                     <Picker.Items>
-                        <x:String>Category 1</x:String>
-                        <x:String>Category 2</x:String>
-                        <x:String>Category 3</x:String>
+                        <x:String>All Categories</x:String>
+                        <x:String>Apparel</x:String>
+                        <x:String>Electronics</x:String>
+                        <x:String>Entertainment</x:String>
+                        <x:String>Home Improvement</x:String>
+                        <x:String>Sporting Goods</x:String>
                     </Picker.Items>
                 </Picker>
-
-                <Button Text="Search"
-                        Grid.Column="2"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        WidthRequest="90" HeightRequest="50"/>
             </Grid>
 
-            <FlexLayout Direction="Row" 
-                        JustifyContent="Start"
-                        AlignItems="Start"
-                        Wrap="Wrap">
-                <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
-                    <VerticalStackLayout Spacing="5">
-                        <Image Source="item1.jpg" Aspect="AspectFill" HeightRequest="100" />
-                        <Label Text="Sample Item 1" FontSize="Medium" />
-                        <Label Text="New York" FontSize="Small" />
-                        <Label Text="$19.99" FontSize="Medium" />
-                        <Button Text="Save" HorizontalOptions="FillAndExpand"/>
-                        <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
-                    </VerticalStackLayout>
-                </Frame>
-
-                <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
-                    <VerticalStackLayout Spacing="5">
-                        <Image Source="item2.jpg" Aspect="AspectFill" HeightRequest="100" />
-                        <Label Text="Sample Item 2" FontSize="Medium" />
-                        <Label Text="Los Angeles" FontSize="Small" />
-                        <Label Text="$29.99" FontSize="Medium" />
-                        <Button Text="Save" HorizontalOptions="FillAndExpand"/>
-                        <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
-                    </VerticalStackLayout>
-                </Frame>
-            </FlexLayout>
+            <CollectionView x:Name="ListingsCollectionView">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
+                            <VerticalStackLayout Spacing="5">
+                                <Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="100" />
+                                <Label Text="{Binding Title}" FontSize="Medium" />
+                                <Label Text="{Binding Location}" FontSize="Small" />
+                                <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="Medium" />
+                                <Button Text="Save" HorizontalOptions="FillAndExpand"/>
+                                <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

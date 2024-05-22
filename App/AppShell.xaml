@@ -21,22 +21,22 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <FlyoutItem Title="My Listings"
+    <FlyoutItem Title="All Listings"
                 Route="MainPage"
-                Icon="listings_icon.png">
+                Icon="flyout.png">
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Saved Listings"
                 Route="MainPage"
-                Icon="saved_icon.png">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+                Icon="flyout.png">
+        <ShellContent ContentTemplate="{DataTemplate local:SavedListingsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="All Listings"
+    <FlyoutItem Title="My Listings"
             Route="MainPage"
-            Icon="listings_icon.png">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+            Icon="flyout.png">
+        <ShellContent ContentTemplate="{DataTemplate local:MyListingsPage}" />
     </FlyoutItem>
 
     <Shell.TitleView>
@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="EnterpriseApp"
+            <Label Text="Enterprise Marketplace"
                    VerticalOptions="Center"
                    HorizontalOptions="Start"
                    TextColor="White" />
@@ -56,7 +56,9 @@
                     HorizontalOptions="End"
                     BackgroundColor="{StaticResource PrimaryColor}"
                     TextColor="White"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    Clicked="OnSignInButtonClicked" />
+
         </Grid>
     </Shell.TitleView>
 </Shell>
