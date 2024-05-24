@@ -24,5 +24,9 @@ namespace EnterpriseProject.Controllers
         {
             return View();
         }
+        public IActionResult AllListings()
+        {
+            return View();
+        }
     }
 }
