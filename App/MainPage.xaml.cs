@@ -1,60 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
+using EnterpriseMarketplace.Models;
+using EnterpriseMarketplace.Services;
+using Microsoft.Maui.Storage;
+using Newtonsoft.Json;
 
 namespace EnterpriseMarketplace
 {
     public partial class MainPage : ContentPage
     {
-        private List<Listing> listings;
+        private readonly ApiService _apiService;
 
         public MainPage()
         {
             InitializeComponent();
+            _apiService = new ApiService();
             LoadListings();
         }
 
-        private void LoadListings()
+        private async void LoadListings()
         {
-            listings = new List<Listing>
-            {
-                new Listing { Title = "Sample Item 1", Location = "New York", Price = 19.99, ImageSource = "item1.jpg", Category = "Apparel" },
-                new Listing { Title = "Sample Item 2", Location = "Los Angeles", Price = 29.99, ImageSource = "item2.jpg", Category = "Electronics" },
-                new Listing { Title = "Sample Item 3", Location = "Chicago", Price = 39.99, ImageSource = "item3.jpg", Category = "Entertainment" },
-                new Listing { Title = "Sample Item 4", Location = "Houston", Price = 49.99, ImageSource = "item4.jpg", Category = "Home Improvement" },
-                new Listing { Title = "Sample Item 5", Location = "Phoenix", Price = 59.99, ImageSource = "item5.jpg", Category = "Sporting Goods" },
-            };
-
+            var listings = await _apiService.GetListingsAsync();
             ListingsCollectionView.ItemsSource = listings;
         }
 
-        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        private async void OnContactButtonClicked(object sender, EventArgs e)
         {
-            FilterListings();
+            var button = sender as Button;
+            var listing = button.BindingContext as Listing;
+            var user = await _apiService.GetUserAsync(listing.UserId);
+
+            await DisplayAlert("Contact Seller", $"Username: {user.Username}\nEmail: {user.Email}\nPhone: {user.Phone}", "OK");
         }
 
-        private void OnCategorySelectedIndexChanged(object sender, EventArgs e)
+        private async void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            FilterListings();
+            var searchText = e.NewTextValue;
+            var listings = await _apiService.GetListingsAsync();
+            ListingsCollectionView.ItemsSource = string.IsNullOrWhiteSpace(searchText)
+                ? listings
+                : listings.FindAll(l => l.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase));
         }
 
-        private void OnSearchButtonClicked(object sender, EventArgs e)
+        private async void OnSaveButtonClicked(object sender, EventArgs e)
         {
-            FilterListings();
+            var button = sender as Button;
+            var listing = button.BindingContext as Listing;
+            var userId = GetCurrentUserId();
+
+            var savedListing = new SavedListing
+            {
+                UserId = userId,
+                ListingId = listing.ListingId,
+                SavedDate = DateTime.Now
+            };
+
+            await _apiService.CreateSavedListingAsync(savedListing);
+            await DisplayAlert("Success", "Listing saved successfully!", "OK");
         }
 
-        private void FilterListings()
+        private int GetCurrentUserId()
         {
-            var searchText = SearchBar.Text?.ToLower() ?? "";
-            var selectedCategory = CategoryPicker.SelectedItem as string;
+            var currentUser = Preferences.Get("CurrentUser", string.Empty);
+            return string.IsNullOrEmpty(currentUser) ? 0 : JsonConvert.DeserializeObject<User>(currentUser).UserId;
+        }
 
-            var filteredListings = listings.Where(l =>
-                (string.IsNullOrEmpty(searchText) || l.Title.ToLower().Contains(searchText) || l.Location.ToLower().Contains(searchText)) &&
-                (string.IsNullOrEmpty(selectedCategory) || selectedCategory == "All Categories" || l.Category == selectedCategory)
-            ).ToList();
-
-            ListingsCollectionView.ItemsSource = filteredListings;
+        private void UpdateSignInButtonText(string username)
+        {
+            var signInButton = this.FindByName<Button>("SignInButton");
+            signInButton.Text = $"Welcome, {username}";
         }
     }
 }

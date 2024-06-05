@@ -38,8 +38,22 @@ namespace EnterpriseAPI.Controllers
             return user;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpPost("signin")]
+        public async Task<ActionResult<User>> SignIn(SignInRequest request)
+        {
+            var user = await _context.Users
+                .SingleOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password);
+
+            if (user == null)
+            {
+                return BadRequest("Invalid username or password.");
+            }
+
+            return user;
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -95,5 +109,11 @@ namespace EnterpriseAPI.Controllers
         {
             return _context.Users.Any(e => e.UserId == id);
         }
+    }
+
+    public class SignInRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
