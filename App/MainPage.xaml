@@ -1,59 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EnterpriseMarketplace.MainPage">
-    <ScrollView>
-        <VerticalStackLayout Spacing="0" Padding="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
+             x:Class="EnterpriseMarketplace.MainPage"
+             Title="All Listings">
 
-                <SearchBar x:Name="SearchBar" Placeholder="Search Listings"
-                           Grid.Column="0"
-                           VerticalOptions="Center"
-                           HorizontalOptions="FillAndExpand"
-                           TextChanged="OnSearchTextChanged"
-                           HeightRequest="40" />
+    <StackLayout Padding="10">
 
-                <Picker x:Name="CategoryPicker" Title="Filter"
-                        Grid.Column="1"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        WidthRequest="150" HeightRequest="40"
-                        Margin="10,0"
-                        SelectedIndexChanged="OnCategorySelectedIndexChanged">
-                    <Picker.Items>
-                        <x:String>All Categories</x:String>
-                        <x:String>Apparel</x:String>
-                        <x:String>Electronics</x:String>
-                        <x:String>Entertainment</x:String>
-                        <x:String>Home Improvement</x:String>
-                        <x:String>Sporting Goods</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Grid>
+        <SearchBar Placeholder="Search Listings"
+                   TextChanged="OnSearchTextChanged"
+                   VerticalOptions="Start" />
 
-            <CollectionView x:Name="ListingsCollectionView">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame WidthRequest="160" HeightRequest="-1" Margin="5" BackgroundColor="LightGray">
-                            <VerticalStackLayout Spacing="5">
-                                <Image Source="{Binding ImageSource}" Aspect="AspectFill" HeightRequest="100" />
-                                <Label Text="{Binding Title}" FontSize="Medium" />
-                                <Label Text="{Binding Location}" FontSize="Small" />
-                                <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="Medium" />
-                                <Button Text="Save" HorizontalOptions="FillAndExpand"/>
-                                <Button Text="Contact" HorizontalOptions="FillAndExpand"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+        <CollectionView x:Name="ListingsCollectionView"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding Listings}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" BackgroundColor="LightGray" Margin="5">
+                        <Label Text="{Binding Title}" FontSize="Medium" FontAttributes="Bold"/>
+                        <Label Text="{Binding Location}" FontSize="Small"/>
+                        <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="Small"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Button Text="Save" Clicked="OnSaveButtonClicked"/>
+                            <Button Text="Contact" Clicked="OnContactButtonClicked"/>
+                        </StackLayout>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </StackLayout>
 </ContentPage>
