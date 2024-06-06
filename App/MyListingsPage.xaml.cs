@@ -1,33 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Maui.Controls;
+﻿using EnterpriseMarketplace.Models;
+using EnterpriseMarketplace.Services;
 
 namespace EnterpriseMarketplace
 {
     public partial class MyListingsPage : ContentPage
     {
-        private List<Listing> myListings;
+        private readonly ApiService _apiService;
 
         public MyListingsPage()
         {
             InitializeComponent();
+            _apiService = new ApiService();
             LoadMyListings();
         }
 
-        private void LoadMyListings()
+        private async void LoadMyListings()
         {
-            myListings = new List<Listing>
-            {
-                new Listing { Title = "My Item 1", Location = "New York", Price = 19.99, ImageSource = "item1.jpg", Category = "Apparel" },
-                new Listing { Title = "My Item 2", Location = "Los Angeles", Price = 29.99, ImageSource = "item2.jpg", Category = "Electronics" }
-            };
-
-            ListingsCollectionView.ItemsSource = myListings;
+            var userId = GetCurrentUserId();
+            var listings = await _apiService.GetListingsByUserAsync(userId);
+            ListingsCollectionView.ItemsSource = listings;
         }
 
-        private async void OnCreateListingButtonClicked(object sender, EventArgs e)
+        private async void OnEditButtonClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(CreateListingPage));
+            var button = sender as Button;
+            var listing = button.BindingContext as Listing;
+            await Navigation.PushAsync(new EditListingPage(listing));
+        }
+
+        private async void OnDeleteButtonClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var listing = button.BindingContext as Listing;
+            await _apiService.DeleteListingAsync(listing.ListingId);
+            LoadMyListings();
+        }
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Search functionality if needed later
+        }
+
+        private int GetCurrentUserId()
+        {
+            return Preferences.Get("CurrentUserId", 0);
         }
     }
 }

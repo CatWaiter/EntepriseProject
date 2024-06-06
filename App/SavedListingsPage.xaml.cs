@@ -1,27 +1,42 @@
-﻿using System.Collections.Generic;
-using Microsoft.Maui.Controls;
+﻿using EnterpriseMarketplace.Models;
+using EnterpriseMarketplace.Services;
 
 namespace EnterpriseMarketplace
 {
     public partial class SavedListingsPage : ContentPage
     {
-        private List<Listing> savedListings;
+        private readonly ApiService _apiService;
 
         public SavedListingsPage()
         {
             InitializeComponent();
+            _apiService = new ApiService();
             LoadSavedListings();
         }
 
-        private void LoadSavedListings()
+        private async void LoadSavedListings()
         {
-            savedListings = new List<Listing>
-            {
-                new Listing { Title = "Saved Item 1", Location = "New York", Price = 19.99, ImageSource = "item1.jpg", Category = "Apparel" },
-                new Listing { Title = "Saved Item 2", Location = "Los Angeles", Price = 29.99, ImageSource = "item2.jpg", Category = "Electronics" }
-            };
+            var userId = GetCurrentUserId();
+            var savedListings = await _apiService.GetSavedListingsAsync(userId);
+            SavedListingsCollectionView.ItemsSource = savedListings;
+        }
 
-            ListingsCollectionView.ItemsSource = savedListings;
+        private async void OnRemoveButtonClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var savedListing = button.BindingContext as SavedListing;
+            await _apiService.DeleteSavedListingAsync(savedListing.SavedListingId);
+            LoadSavedListings();
+        }
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Search if needed later
+        }
+
+        private int GetCurrentUserId()
+        {
+            return Preferences.Get("CurrentUserId", 0);
         }
     }
 }
