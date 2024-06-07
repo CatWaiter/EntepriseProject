@@ -22,7 +22,8 @@ namespace EnterpriseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
@@ -35,7 +36,7 @@ namespace EnterpriseAPI.Controllers
                 return NotFound();
             }
 
-            return user;
+            return Ok(user);
         }
 
         [HttpPost("signin")]
@@ -49,7 +50,7 @@ namespace EnterpriseAPI.Controllers
                 return BadRequest("Invalid username or password.");
             }
 
-            return user;
+            return Ok(user);
         }
 
         [HttpPost("register")]

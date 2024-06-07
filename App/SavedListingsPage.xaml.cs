@@ -1,5 +1,9 @@
 ﻿using EnterpriseMarketplace.Models;
 using EnterpriseMarketplace.Services;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
+using System;
+using System.Threading.Tasks;
 
 namespace EnterpriseMarketplace
 {
@@ -16,22 +20,31 @@ namespace EnterpriseMarketplace
 
         private async void LoadSavedListings()
         {
-            var userId = GetCurrentUserId();
-            var savedListings = await _apiService.GetSavedListingsAsync(userId);
-            SavedListingsCollectionView.ItemsSource = savedListings;
+            try
+            {
+                var userId = GetCurrentUserId();
+                var savedListings = await _apiService.GetSavedListingsByUserAsync(userId);
+                SavedListingsCollectionView.ItemsSource = savedListings;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to load saved listings: {ex.Message}", "OK");
+            }
         }
 
         private async void OnRemoveButtonClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
             var savedListing = button.BindingContext as SavedListing;
-            await _apiService.DeleteSavedListingAsync(savedListing.SavedListingId);
-            LoadSavedListings();
-        }
-
-        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
-        {
-            // Search if needed later
+            try
+            {
+                await _apiService.DeleteSavedListingAsync(savedListing.SavedListingId);
+                LoadSavedListings();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to remove saved listing: {ex.Message}", "OK");
+            }
         }
 
         private int GetCurrentUserId()

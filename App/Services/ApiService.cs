@@ -61,7 +61,7 @@ namespace EnterpriseMarketplace.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<List<SavedListing>> GetSavedListingsAsync(int userId)
+        public async Task<List<SavedListing>> GetSavedListingsByUserAsync(int userId)
         {
             var response = await _httpClient.GetAsync($"SavedListings/user/{userId}");
             response.EnsureSuccessStatusCode();
@@ -87,6 +87,12 @@ namespace EnterpriseMarketplace.Services
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<User>(jsonString);
+        }
+
+        public async Task UpdateListingAsync(Listing listing)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"Listings/{listing.ListingId}", listing);
+            response.EnsureSuccessStatusCode();
         }
     }
 }
