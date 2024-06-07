@@ -5,27 +5,18 @@
              Title="Saved Listings">
 
     <StackLayout Padding="10">
-
-        <SearchBar Placeholder="Search Saved Listings"
-                   TextChanged="OnSearchTextChanged"
-                   VerticalOptions="Start" />
-
-        <CollectionView x:Name="SavedListingsCollectionView"
-                        SelectionMode="Single"
-                        ItemsSource="{Binding SavedListings}">
-
+        <CollectionView x:Name="SavedListingsCollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" BackgroundColor="LightGray" Margin="5">
-                        <Label Text="{Binding Listing.Title}" FontSize="Medium" FontAttributes="Bold"/>
-                        <Label Text="{Binding Listing.Location}" FontSize="Small"/>
-                        <Label Text="{Binding Listing.Price, StringFormat='{}{0:C}'}" FontSize="Small"/>
-                        <Button Text="Remove" Clicked="OnRemoveButtonClicked"/>
+                    <StackLayout Margin="10" Padding="10" BackgroundColor="LightGray">
+                        <Label Text="{Binding Listing.Title}" FontSize="Medium" />
+                        <Label Text="{Binding Listing.Location}" FontSize="Small" />
+                        <Label Text="{Binding Listing.Price, StringFormat='{}{0:C}'}" FontSize="Small" />
+                        <Button Text="Remove" Clicked="OnRemoveButtonClicked" />
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
-
     </StackLayout>
+
 </ContentPage>

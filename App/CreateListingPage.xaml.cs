@@ -17,16 +17,31 @@ namespace EnterpriseMarketplace
 
         private async void OnCreateListingButtonClicked(object sender, EventArgs e)
         {
-            var listing = new Listing
+            try
             {
-                Title = TitleEntry.Text,
-                Location = LocationEntry.Text,
-                Price = decimal.Parse(PriceEntry.Text),
-                Category = CategoryPicker.SelectedItem.ToString(),
-                PostedDate = DateTime.Now
-            };
+                var listing = new Listing
+                {
+                    Title = TitleEntry.Text,
+                    Location = LocationEntry.Text,
+                    Price = decimal.Parse(PriceEntry.Text),
+                    Category = CategoryPicker.SelectedItem.ToString(),
+                    PostedDate = DateTime.Now,
+                    UserId = GetCurrentUserId()
+                };
 
-            await _apiService.CreateListingAsync(listing);
+                await _apiService.CreateListingAsync(listing);
+                await DisplayAlert("Success", "Listing created successfully.", "OK");
+                await Shell.Current.GoToAsync("//MainPage");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to create listing: {ex.Message}", "OK");
+            }
+        }
+
+        private int GetCurrentUserId()
+        {
+            return Preferences.Get("CurrentUserId", 0);
         }
     }
 }
