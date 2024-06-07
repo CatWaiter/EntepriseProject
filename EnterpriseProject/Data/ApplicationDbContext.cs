@@ -11,6 +11,6 @@ namespace EnterpriseProject.Data
         {
         }
 
-        public DbSet<ActivityModel> Activities { get; set; }
+        public DbSet<UserActivity> UserActivities { get; set; }
     }
 }
