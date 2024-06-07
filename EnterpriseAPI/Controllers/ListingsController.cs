@@ -39,6 +39,22 @@ namespace EnterpriseAPI.Controllers
             return listing;
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Listing>>> GetListingsByUser(int userId)
+        {
+            var listings = await _context.Listings
+                .Where(l => l.UserId == userId)
+                .Include(l => l.User)
+                .ToListAsync();
+
+            if (listings == null || listings.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return listings;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Listing>> PostListing(Listing listing)
         {
@@ -87,7 +103,14 @@ namespace EnterpriseAPI.Controllers
             }
 
             _context.Listings.Remove(listing);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message}");
+            }
 
             return NoContent();
         }
