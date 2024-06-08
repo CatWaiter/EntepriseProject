@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace EnterpriseAPI.Models
 {
@@ -15,6 +16,7 @@ namespace EnterpriseAPI.Models
         public DateTime PostedDate { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; }
+        [JsonIgnore]
         public ICollection<SavedListing>? SavedListings { get; set; }
     }
 }

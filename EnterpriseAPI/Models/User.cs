@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace EnterpriseAPI.Models
 {
@@ -13,7 +14,9 @@ namespace EnterpriseAPI.Models
         public string? Location { get; set; }
         public string? Phone { get; set; }
         public DateTime AccountCreatedDate { get; set; }
+        [JsonIgnore]
         public ICollection<Listing>? Listings { get; set; }
+        [JsonIgnore]
         public ICollection<SavedListing>? SavedListings { get; set; }
         public string? Role { get; set; }
     }

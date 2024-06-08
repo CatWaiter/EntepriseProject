@@ -32,7 +32,7 @@ namespace EnterpriseMarketplace
             _listing.Price = decimal.Parse(PriceEntry.Text);
             _listing.Category = CategoryPicker.SelectedItem.ToString();
 
-            await _apiService.CreateListingAsync(_listing);
+            await _apiService.UpdateListingAsync(_listing);
             await Navigation.PopAsync();
         }
     }

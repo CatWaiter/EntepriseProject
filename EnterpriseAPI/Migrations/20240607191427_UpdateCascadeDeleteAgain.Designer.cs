@@ -4,6 +4,7 @@ using EnterpriseAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnterpriseAPI.Migrations
 {
     [DbContext(typeof(EnterpriseContext))]
-    partial class EnterpriseContextModelSnapshot : ModelSnapshot
+    [Migration("20240607191427_UpdateCascadeDeleteAgain")]
+    partial class UpdateCascadeDeleteAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,7 +142,7 @@ namespace EnterpriseAPI.Migrations
                     b.HasOne("EnterpriseAPI.Models.Listing", "Listing")
                         .WithMany("SavedListings")
                         .HasForeignKey("ListingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EnterpriseAPI.Models.User", "User")

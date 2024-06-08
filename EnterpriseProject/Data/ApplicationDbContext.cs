@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using EnterpriseProject.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Data
@@ -9,5 +10,7 @@ namespace EnterpriseProject.Data
             : base(options)
         {
         }
+
+        public DbSet<UserActivity> UserActivities { get; set; }
     }
 }

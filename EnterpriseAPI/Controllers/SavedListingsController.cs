@@ -22,7 +22,8 @@ namespace EnterpriseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SavedListing>>> GetSavedListings()
         {
-            return await _context.SavedListings.Include(sl => sl.User).Include(sl => sl.Listing).ToListAsync();
+            var savedListings = await _context.SavedListings.Include(sl => sl.User).Include(sl => sl.Listing).ToListAsync();
+            return Ok(savedListings);
         }
 
         [HttpGet("{id}")]
@@ -37,7 +38,24 @@ namespace EnterpriseAPI.Controllers
                 return NotFound();
             }
 
-            return savedListing;
+            return Ok(savedListing);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<SavedListing>>> GetSavedListingsByUser(int userId)
+        {
+            var savedListings = await _context.SavedListings
+                .Where(sl => sl.UserId == userId)
+                .Include(sl => sl.User)
+                .Include(sl => sl.Listing)
+                .ToListAsync();
+
+            if (savedListings == null || savedListings.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(savedListings);
         }
 
         [HttpPost]

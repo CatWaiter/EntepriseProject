@@ -31,7 +31,7 @@ namespace EnterpriseAPI.Data
                 .HasMany(l => l.SavedListings)
                 .WithOne(sl => sl.Listing)
                 .HasForeignKey(sl => sl.ListingId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Listing>()
                 .Property(l => l.Price)

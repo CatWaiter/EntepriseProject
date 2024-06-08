@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
 using EnterpriseMarketplace.Models;
 using EnterpriseMarketplace.Services;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
-using Newtonsoft.Json;
 
 namespace EnterpriseMarketplace
 {
@@ -19,14 +16,64 @@ namespace EnterpriseMarketplace
         {
             InitializeComponent();
             _apiService = new ApiService();
-            LoadListings();
+            CheckIfLoggedIn();
         }
 
-        private async void LoadListings()
+        protected override async void OnAppearing()
         {
-            var listings = await _apiService.GetListingsAsync();
-            ListingsCollectionView.ItemsSource = listings;
+            base.OnAppearing();
+            await LoadListings();
         }
+
+        private async void CheckIfLoggedIn()
+        {
+            var currentUserId = Preferences.Get("CurrentUserId", 0);
+            if (currentUserId == 0)
+            {
+                await Shell.Current.GoToAsync(nameof(SignInPage));
+            }
+        }
+
+        private async Task LoadListings()
+        {
+            try
+            {
+                var listings = await _apiService.GetListingsAsync();
+                ListingsCollectionView.ItemsSource = listings;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Unable to load listings: {ex.Message}", "OK");
+            }
+        }
+
+        private int GetCurrentUserId()
+        {
+            return Preferences.Get("CurrentUserId", 0);
+        }
+
+        private async void OnSaveButtonClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var button = sender as Button;
+                var listing = button?.BindingContext as Listing;
+                var savedListing = new SavedListing
+                {
+                    UserId = GetCurrentUserId(),
+                    ListingId = listing.ListingId,
+                    SavedDate = DateTime.Now
+                };
+
+                await _apiService.CreateSavedListingAsync(savedListing);
+                await DisplayAlert("Success", "Listing saved successfully.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to save listing: {ex.Message}", "OK");
+            }
+        }
+
 
         private async void OnContactButtonClicked(object sender, EventArgs e)
         {
@@ -44,35 +91,6 @@ namespace EnterpriseMarketplace
             ListingsCollectionView.ItemsSource = string.IsNullOrWhiteSpace(searchText)
                 ? listings
                 : listings.FindAll(l => l.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase));
-        }
-
-        private async void OnSaveButtonClicked(object sender, EventArgs e)
-        {
-            var button = sender as Button;
-            var listing = button.BindingContext as Listing;
-            var userId = GetCurrentUserId();
-
-            var savedListing = new SavedListing
-            {
-                UserId = userId,
-                ListingId = listing.ListingId,
-                SavedDate = DateTime.Now
-            };
-
-            await _apiService.CreateSavedListingAsync(savedListing);
-            await DisplayAlert("Success", "Listing saved successfully!", "OK");
-        }
-
-        private int GetCurrentUserId()
-        {
-            var currentUser = Preferences.Get("CurrentUser", string.Empty);
-            return string.IsNullOrEmpty(currentUser) ? 0 : JsonConvert.DeserializeObject<User>(currentUser).UserId;
-        }
-
-        private void UpdateSignInButtonText(string username)
-        {
-            var signInButton = this.FindByName<Button>("SignInButton");
-            signInButton.Text = $"Welcome, {username}";
         }
     }
 }

@@ -61,14 +61,13 @@
                     Grid.Column="1"
                     Clicked="OnSignInButtonClicked" />
 
-            <Button x:Name="RegisterButton"
-                    Text="Register"
+            <Button Text="Logout"
                     VerticalOptions="Center"
                     HorizontalOptions="End"
                     BackgroundColor="{StaticResource PrimaryColor}"
                     TextColor="White"
                     Grid.Column="2"
-                    Clicked="OnRegisterButtonClicked" />
+                    Clicked="OnLogoutButtonClicked" />
         </Grid>
     </Shell.TitleView>
 </Shell>
