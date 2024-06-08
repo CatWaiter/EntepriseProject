@@ -1,60 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using EnterpriseMarketplace.Models;
+using EnterpriseMarketplace.Services;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 
 namespace EnterpriseMarketplace
 {
     public partial class MainPage : ContentPage
     {
-        private List<Listing> listings;
+        private readonly ApiService _apiService;
 
         public MainPage()
         {
             InitializeComponent();
-            LoadListings();
+            _apiService = new ApiService();
+            CheckIfLoggedIn();
         }
 
-        private void LoadListings()
+        protected override async void OnAppearing()
         {
-            listings = new List<Listing>
+            base.OnAppearing();
+            await LoadListings();
+        }
+
+        private async void CheckIfLoggedIn()
+        {
+            var currentUserId = Preferences.Get("CurrentUserId", 0);
+            if (currentUserId == 0)
             {
-                new Listing { Title = "Sample Item 1", Location = "New York", Price = 19.99, ImageSource = "item1.jpg", Category = "Apparel" },
-                new Listing { Title = "Sample Item 2", Location = "Los Angeles", Price = 29.99, ImageSource = "item2.jpg", Category = "Electronics" },
-                new Listing { Title = "Sample Item 3", Location = "Chicago", Price = 39.99, ImageSource = "item3.jpg", Category = "Entertainment" },
-                new Listing { Title = "Sample Item 4", Location = "Houston", Price = 49.99, ImageSource = "item4.jpg", Category = "Home Improvement" },
-                new Listing { Title = "Sample Item 5", Location = "Phoenix", Price = 59.99, ImageSource = "item5.jpg", Category = "Sporting Goods" },
-            };
-
-            ListingsCollectionView.ItemsSource = listings;
+                await Shell.Current.GoToAsync(nameof(SignInPage));
+            }
         }
 
-        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        private async Task LoadListings()
         {
-            FilterListings();
+            try
+            {
+                var listings = await _apiService.GetListingsAsync();
+                ListingsCollectionView.ItemsSource = listings;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Unable to load listings: {ex.Message}", "OK");
+            }
         }
 
-        private void OnCategorySelectedIndexChanged(object sender, EventArgs e)
+        private int GetCurrentUserId()
         {
-            FilterListings();
+            return Preferences.Get("CurrentUserId", 0);
         }
 
-        private void OnSearchButtonClicked(object sender, EventArgs e)
+        private async void OnSaveButtonClicked(object sender, EventArgs e)
         {
-            FilterListings();
+            try
+            {
+                var button = sender as Button;
+                var listing = button?.BindingContext as Listing;
+                var savedListing = new SavedListing
+                {
+                    UserId = GetCurrentUserId(),
+                    ListingId = listing.ListingId,
+                    SavedDate = DateTime.Now
+                };
+
+                await _apiService.CreateSavedListingAsync(savedListing);
+                await DisplayAlert("Success", "Listing saved successfully.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to save listing: {ex.Message}", "OK");
+            }
         }
 
-        private void FilterListings()
+
+        private async void OnContactButtonClicked(object sender, EventArgs e)
         {
-            var searchText = SearchBar.Text?.ToLower() ?? "";
-            var selectedCategory = CategoryPicker.SelectedItem as string;
+            var button = sender as Button;
+            var listing = button.BindingContext as Listing;
+            var user = await _apiService.GetUserAsync(listing.UserId);
 
-            var filteredListings = listings.Where(l =>
-                (string.IsNullOrEmpty(searchText) || l.Title.ToLower().Contains(searchText) || l.Location.ToLower().Contains(searchText)) &&
-                (string.IsNullOrEmpty(selectedCategory) || selectedCategory == "All Categories" || l.Category == selectedCategory)
-            ).ToList();
+            await DisplayAlert("Contact Seller", $"Username: {user.Username}\nEmail: {user.Email}\nPhone: {user.Phone}", "OK");
+        }
 
-            ListingsCollectionView.ItemsSource = filteredListings;
+        private async void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchText = e.NewTextValue;
+            var listings = await _apiService.GetListingsAsync();
+            ListingsCollectionView.ItemsSource = string.IsNullOrWhiteSpace(searchText)
+                ? listings
+                : listings.FindAll(l => l.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

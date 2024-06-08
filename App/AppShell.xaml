@@ -28,14 +28,14 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Saved Listings"
-                Route="MainPage"
+                Route="SavedListingsPage"
                 Icon="flyout.png">
         <ShellContent ContentTemplate="{DataTemplate local:SavedListingsPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="My Listings"
-            Route="MainPage"
-            Icon="flyout.png">
+                Route="MyListingsPage"
+                Icon="flyout.png">
         <ShellContent ContentTemplate="{DataTemplate local:MyListingsPage}" />
     </FlyoutItem>
 
@@ -44,6 +44,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label Text="Enterprise Marketplace"
@@ -51,7 +52,8 @@
                    HorizontalOptions="Start"
                    TextColor="White" />
 
-            <Button Text="Sign In"
+            <Button x:Name="SignInButton"
+                    Text="Sign In"
                     VerticalOptions="Center"
                     HorizontalOptions="End"
                     BackgroundColor="{StaticResource PrimaryColor}"
@@ -59,6 +61,13 @@
                     Grid.Column="1"
                     Clicked="OnSignInButtonClicked" />
 
+            <Button Text="Logout"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    Grid.Column="2"
+                    Clicked="OnLogoutButtonClicked" />
         </Grid>
     </Shell.TitleView>
 </Shell>

@@ -6,22 +6,21 @@
     <StackLayout Padding="20" Spacing="15">
         <Label Text="Create Listing" FontSize="Large" HorizontalOptions="Center"/>
 
-        <Entry Placeholder="Title" />
+        <Entry x:Name="TitleEntry" Placeholder="Title" />
         <Button Text="Upload Picture" HorizontalOptions="FillAndExpand"/>
-        <Entry Placeholder="Location" />
-        <Entry Placeholder="Price" Keyboard="Numeric" />
+        <Entry x:Name="LocationEntry" Placeholder="Location" />
+        <Entry x:Name="PriceEntry" Placeholder="Price" Keyboard="Numeric" />
         <Picker Title="Select Category"
-                  x:Name="CategoryPicker"
-                  HorizontalOptions="FillAndExpand">
-          <Picker.Items>
-            <x:String>Apparel</x:String>
-            <x:String>Electronics</x:String>
-            <x:String>Entertainment</x:String>
-            <x:String>Home Improvement</x:String>
-            <x:String>Sporting Goods</x:String>
-          </Picker.Items>
+              x:Name="CategoryPicker"
+              HorizontalOptions="FillAndExpand">
+            <Picker.Items>
+                <x:String>Apparel</x:String>
+                <x:String>Electronics</x:String>
+                <x:String>Entertainment</x:String>
+                <x:String>Home Improvement</x:String>
+                <x:String>Sporting Goods</x:String>
+            </Picker.Items>
         </Picker>
-
-        <Button Text="Create Listing" HorizontalOptions="Center"/>
+        <Button Text="Create Listing" HorizontalOptions="Center" Clicked="OnCreateListingButtonClicked"/>
     </StackLayout>
 </ContentPage>

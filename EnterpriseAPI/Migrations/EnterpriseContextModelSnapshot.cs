@@ -140,7 +140,7 @@ namespace EnterpriseAPI.Migrations
                     b.HasOne("EnterpriseAPI.Models.Listing", "Listing")
                         .WithMany("SavedListings")
                         .HasForeignKey("ListingId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EnterpriseAPI.Models.User", "User")
