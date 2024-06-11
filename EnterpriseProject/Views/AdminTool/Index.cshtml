@@ -1,9 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
+﻿@model IEnumerable<EnterpriseProject.Data.User>
 @{
     ViewData["Title"] = "Admin Tools";
 }
+<h2>Admin Tools - User Management</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Username</td>
+            <td>@user.Email</td>
+            <td>@user.Role</td>
+            <td>
+                <a href="@Url.Action("EditUser", "AdminTool", new { id = user.UserId })">Edit</a>
+                <a href="@Url.Action("DeleteUser", "AdminTool", new { id = user.UserId })">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 
