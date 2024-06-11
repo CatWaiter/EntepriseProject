@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
-using EnterpriseProject.Context;
+﻿using EnterpriseProject.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseProject.Controllers
 {
+    [Authorize(Policy = "RequireAdminRole")]
     public class AdminToolController : Controller
     {
         private readonly ManualSecurityContext _context;
@@ -13,21 +14,49 @@ namespace EnterpriseProject.Controllers
             _context = context;
         }
         
+        [HttpGet]
         public IActionResult Index()
         {
-            var isAdmin = UserIsAdmin();
-            if (!isAdmin)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
+            var users = _context.Users?.ToList();
+            return View(users );
         }
 
-        private bool UserIsAdmin()
+        [HttpGet]
+        public IActionResult EditUser(int id)
         {
-            var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var user = _context.Users?.Find(Convert.ToInt32(userId));
-            return user?.Role == "Admin";
+            var user = _context.Users?.Find(id);
+            
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            return View(user);
+        }
+        
+       [HttpGet]
+        public IActionResult DeleteUser(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        
+        [HttpPost, ActionName("DeleteUser")]
+        public IActionResult DeleteUserConfirmed(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
     }
 }

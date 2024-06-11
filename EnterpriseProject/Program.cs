@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EnterpriseProject.Context;
 using EnterpriseProject.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -35,6 +36,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "EnterpriseProject.AuthCookie";
         options.Cookie.Path = "/";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+});
 
 var app = builder.Build();
 
