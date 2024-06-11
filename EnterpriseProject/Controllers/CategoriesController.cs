@@ -1,28 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EnterpriseProject.Context;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Controllers
 {
     public class CategoriesController : Controller
     {
-        public IActionResult Index()
+        private readonly WebsiteMarketContext _context;
+
+        public CategoriesController(WebsiteMarketContext context)
         {
-            return View();
+            _context = context;
         }
-        public IActionResult Electronics()
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var apparel = await _context.Listings
+                .Where(l => l.Category == "Apparel")
+                .ToListAsync();
+            return View(apparel);
         }
-        public IActionResult Entertainment()
+
+        [HttpGet]
+        public async Task<IActionResult> Electronics()
         {
-            return View();
+            var electronics = await _context.Listings.
+                Where(l => l.Category == "Electronics").
+                ToListAsync();
+            return View(electronics);
         }
-        public IActionResult HomeImprovementSupplies()
+        
+        public async Task<IActionResult> Entertainment()
         {
-            return View();
+            var entertainment = await _context.Listings
+                .Where(l => l.Category == "Entertainment")
+                .ToListAsync();
+            return View(entertainment);
         }
-        public IActionResult SportingGoods()
+        public async Task<IActionResult> HomeImprovementSupplies()
         {
-            return View();
+            var homeImprovementSupplies = await _context.Listings
+                .Where(l => l.Category == "HomeImprovementSupplies")
+                .ToListAsync();
+            return View(homeImprovementSupplies);
+        }
+        public async Task<IActionResult> SportingGoods()
+        {
+            var sportingGoods = await _context.Listings
+                .Where(l => l.Category == "SportingGoods")
+                .ToListAsync();
+            return View(sportingGoods);
         }
         public IActionResult AllListings()
         {
