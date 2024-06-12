@@ -4,19 +4,31 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace EnterpriseMarketplace
 {
     public partial class MyListingsPage : ContentPage
     {
         private readonly ApiService _apiService;
+        public ObservableCollection<Listing> MyListings { get; set; } = new ObservableCollection<Listing>();
+        public ICommand LoadCommand { get; set; }
 
         public MyListingsPage()
         {
             InitializeComponent();
             _apiService = new ApiService();
+            LoadCommand = new Command(ExecuteLoadCommand);
+            BindingContext = this;
             LoadMyListings();
+        }
+        private void ExecuteLoadCommand()
+        {
+            IsBusy = true;
+            LoadMyListings();
+            IsBusy = false;
         }
 
         private async void LoadMyListings()
@@ -24,12 +36,17 @@ namespace EnterpriseMarketplace
             try
             {
                 var userId = GetCurrentUserId();
-                var listings = await _apiService.GetListingsByUserAsync(userId);
-                MyListingsCollectionView.ItemsSource = listings;
+                var myListings = await _apiService.GetListingsByUserAsync(userId);
+                MyListings.Clear();
+                foreach (var listing in myListings)
+                {
+                    MyListings.Add(listing);
+                }
+                MyListingsCollectionView.ItemsSource = MyListings;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Failed to load listings: {ex.Message}", "OK");
+                // no message for this
             }
         }
 
@@ -47,14 +64,16 @@ namespace EnterpriseMarketplace
         {
             var button = sender as Button;
             var listing = button.BindingContext as Listing;
-            try
+            if (listing == null) return;
+
+            bool isDeleted = await _apiService.DeleteListingAsync(listing.ListingId);
+            if (isDeleted)
             {
-                await _apiService.DeleteListingAsync(listing.ListingId);
-                LoadMyListings();
+                MyListings.Remove(listing);
             }
-            catch (Exception ex)
+            else
             {
-                await DisplayAlert("Error", $"Failed to remove listing: {ex.Message}", "OK");
+                // no message for this
             }
         }
 

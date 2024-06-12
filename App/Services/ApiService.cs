@@ -22,7 +22,19 @@ namespace EnterpriseMarketplace.Services
         {
             var signInRequest = new { Username = username, Password = password };
             var response = await _httpClient.PostAsJsonAsync("Users/signin", signInRequest);
-            response.EnsureSuccessStatusCode();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Account not found.");
+                }
+                else
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<User>(jsonString);
         }
@@ -55,11 +67,12 @@ namespace EnterpriseMarketplace.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeleteListingAsync(int id)
+        public async Task<bool> DeleteListingAsync(int listingId)
         {
-            var response = await _httpClient.DeleteAsync($"Listings/{id}");
-            response.EnsureSuccessStatusCode();
+            var response = await _httpClient.DeleteAsync($"Listings/{listingId}");
+            return response.IsSuccessStatusCode;
         }
+
 
         public async Task<List<SavedListing>> GetSavedListingsByUserAsync(int userId)
         {
