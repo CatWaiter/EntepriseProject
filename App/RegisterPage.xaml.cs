@@ -32,7 +32,7 @@ namespace EnterpriseMarketplace
             {
                 await _apiService.RegisterAsync(user);
                 await DisplayAlert("Success", "Registration successful", "OK");
-                await Shell.Current.GoToAsync("//SignInPage");
+                await Shell.Current.GoToAsync("SignInPage", true);
             }
             catch (Exception ex)
             {

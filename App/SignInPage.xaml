@@ -7,8 +7,10 @@
     <StackLayout Padding="10">
         <Entry x:Name="UsernameEntry" Placeholder="Username" />
         <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
-        <Button Text="Sign In" Clicked="OnSignInButtonClicked" x:Name="SignInButton" />
-        <Button Text="Register" Clicked="OnRegisterButtonClicked" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+            <Button Text="Sign In" Clicked="OnSignInButtonClicked" WidthRequest="100" x:Name="SignInButton" Style="{StaticResource ButtonStyle}" />
+            <Button Text="Register" Clicked="OnRegisterButtonClicked" WidthRequest="100" Style="{StaticResource ButtonStyle}" />
+        </StackLayout>
     </StackLayout>
 
 </ContentPage>

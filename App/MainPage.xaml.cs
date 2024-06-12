@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using EnterpriseMarketplace.Models;
 using EnterpriseMarketplace.Services;
 using Microsoft.Maui.Controls;
@@ -11,18 +12,28 @@ namespace EnterpriseMarketplace
     public partial class MainPage : ContentPage
     {
         private readonly ApiService _apiService;
+        public ICommand LoadCommand { get; set; }
 
         public MainPage()
         {
             InitializeComponent();
             _apiService = new ApiService();
-            CheckIfLoggedIn();
+            LoadCommand = new Command(ExecuteLoadCommand);
+            BindingContext = this;
+            LoadListings();
+        }
+        private void ExecuteLoadCommand()
+        {
+            IsBusy = true;
+            LoadListings();
+            IsBusy = false;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
             await LoadListings();
+            (AppShell.Current as AppShell)?.UpdateNavigationBar();
         }
 
         private async void CheckIfLoggedIn()
@@ -43,7 +54,7 @@ namespace EnterpriseMarketplace
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Unable to load listings: {ex.Message}", "OK");
+                //no message for this
             }
         }
 

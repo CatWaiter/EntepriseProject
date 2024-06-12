@@ -29,6 +29,7 @@ namespace EnterpriseMarketplace
                     Preferences.Set("CurrentUserId", user.UserId);
                     Preferences.Set("CurrentUsername", user.Username);
                     (App.Current.MainPage as AppShell).UpdateSignInButtonText(user.Username);
+                    ((AppShell)Shell.Current).EnableFlyout();
                     await Shell.Current.GoToAsync("//MainPage");
                 }
                 else

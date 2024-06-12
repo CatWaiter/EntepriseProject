@@ -8,6 +8,8 @@
     FlyoutBehavior="Flyout"
     Shell.FlyoutBackgroundColor="{StaticResource PrimaryColor}">
 
+    <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate local:SignInPage}"/>
+    
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <StackLayout BackgroundColor="#008CBA">
