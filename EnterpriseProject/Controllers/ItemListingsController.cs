@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EnterpriseProject.Context;
 using EnterpriseProject.Data;
+using System.Net;
 
 namespace EnterpriseProject.Controllers
 {
@@ -14,9 +15,12 @@ namespace EnterpriseProject.Controllers
     {
         private readonly WebsiteMarketContext _context;
 
-        public ItemListingsController(WebsiteMarketContext context)
+        private readonly IWebHostEnvironment WebHostEnvironment;
+
+        public ItemListingsController(WebsiteMarketContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         // GET: ItemListings
@@ -57,8 +61,22 @@ namespace EnterpriseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ListingId,Title,PictureUrl,Description,Location,Price,Category,PostedDate,UserId")] Listing listing)
+        public async Task<IActionResult> Create([Bind("ListingId,Title,PictureUrl,Description,Location,Price,Category,PostedDate,UserId")] Listing listing, ListingViewModel vm)
         {
+            string stringFileName = UploadFile(vm);
+            listing = new Listing
+            {
+                ListingId = vm.ListingId,
+                Title = vm.Title,
+                PictureUrl = stringFileName,
+                Description = vm.Description,
+                Location = vm.Location,
+                Price = vm.Price,
+                Category = vm.Category,
+                PostedDate = vm.PostedDate,
+                UserId = vm.UserId
+            };
+
             ModelState.Remove("User");
             if (ModelState.IsValid)
             {
@@ -76,6 +94,24 @@ namespace EnterpriseProject.Controllers
             }
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", listing.UserId);
             return View(listing);
+        }
+
+        private string UploadFile(ListingViewModel vm)
+        {
+            string fileName = null;
+            if(vm.PictureUrl != null)
+            {
+                string uploadDir = Path.Combine(WebHostEnvironment.WebRootPath, "images");
+                fileName = Guid.NewGuid().ToString() + "-" + vm.PictureUrl.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    vm.PictureUrl.CopyTo(fileStream);
+                }
+            }
+
+            return fileName;
         }
 
         // GET: ItemListings/Edit/5
