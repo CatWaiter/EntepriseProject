@@ -118,6 +118,21 @@ namespace TestEnterpriseProject
             //Assert
             Assert.Equal(200, code);
         }
+
+        [Theory]
+        [InlineData("HP Laptop")]
+        public async Task TestForListings(string listing)
+        {
+            //Arrange
+
+            //Act
+            var response = await _httpClient.GetAsync("ItemListings/Index");
+            var pageContent = await response.Content.ReadAsStringAsync();
+            var contentString = pageContent.ToString();
+
+            //Assert
+            Assert.Contains(listing, contentString);
+        }
     }
 
 }
