@@ -1,0 +1,57 @@
+@model IEnumerable<EnterpriseProject.Data.SavedListing>
+
+@{
+    ViewData["Title"] = "ViewSavedListings";
+}
+
+<h1>ViewSavedListings</h1>
+
+<table class="table">
+    <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SavedDate)
+                </th>
+                <th>
+                    Listing ID
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SavedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Listing.ListingId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Listing.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Listing.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserId)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.SavedListingId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    <a asp-controller="AuthnSecurity" asp-action="Manage" class="btn btn-primary">
+                Back to User Account
+    </a>
+</table>

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using EnterpriseProject.Context;
 using EnterpriseProject.Data;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EnterpriseProject.Controllers
 {
+    [Authorize(Policy = "RequireAdminRole")]
     public class ItemListingsController : Controller
     {
         private readonly WebsiteMarketContext _context;
@@ -93,7 +95,7 @@ namespace EnterpriseProject.Controllers
                 }
             }
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", listing.UserId);
-            return View(listing);
+            return View();
         }
 
         private string UploadFile(ListingViewModel vm)

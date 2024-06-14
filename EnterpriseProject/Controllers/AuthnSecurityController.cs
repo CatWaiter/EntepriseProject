@@ -4,6 +4,7 @@ using EnterpriseProject.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriseProject.Controllers
 {
@@ -54,6 +55,45 @@ namespace EnterpriseProject.Controllers
             }
 
             return View(user);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> ViewSavedListings()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var listings = await _context.SavedListings
+                .Include(s => s.Listing)
+                .Include(s => s.User)
+                .Where(s => s.UserId == Convert.ToInt32(userId))
+                .ToListAsync();
+            
+            return View(listings);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var savedListing = await _context.SavedListings.FindAsync(id);
+            if (savedListing == null)
+            {
+                return NotFound();
+            }
+            return View(savedListing);
+        }
+        
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var savedListing = await _context.SavedListings.FindAsync(id);
+            _context.SavedListings.Remove(savedListing);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ViewSavedListings));
         }
 
         [HttpPost]
