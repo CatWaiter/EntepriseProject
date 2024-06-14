@@ -6,19 +6,35 @@
 <h2>Sporting Goods</h2>
 
 <div class="container gridContainer">
-@foreach (var item in Model)
-{
-    <div class="row gridRowPadding">
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="@item.PictureUrl" class="card-img-top" alt="Image of @item.Title">
-                <div class="card-body">
-                    <h5 class="card-title">@item.Price.ToString("C")</h5>
-                    <p class="card-text">@item.Description</p>
-                    <a href="#" class="btn btn-primary">View More</a>
+    @foreach (var item in Model)
+    {
+        <div class="row gridRowPadding">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="@item.PictureUrl" class="card-img-top" alt="Image of @item.Title">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Price.ToString("C")</h5>
+                        <p class="card-text">@item.Description</p>
+                        <a href="#" class="btn btn-primary mb-2">View More</a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="button-group">
+                                @if (ViewBag.UserSavedListingIds.Contains(item.ListingId))
+                                {
+                                    <button class="btn btn-secondary" disabled>Already Saved</button>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Categories" asp-action="SaveListing" method="post" class="w-100">
+                                        <input type="hidden" name="listingId" value="@item.ListingId" />
+                                        <button type="submit" class="btn btn-success">Save Listing</button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
 </div>
