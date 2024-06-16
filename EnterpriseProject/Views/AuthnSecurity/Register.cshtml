@@ -8,17 +8,17 @@
         <form asp-controller="AuthnSecurity" asp-action="Register" method="post">
             <h2>Create a new account.</h2>
             <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating mb-3">
-                <input type="email" name="email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label>Email</label>
+                <input type="text" name="username" class="form-control" autocomplete="username" aria-required="true" placeholder="Username" />
+                <label>Username</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" name="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input type="password" name="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password" />
                 <label>Password</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" name="confirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input type="password" name="confirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
                 <label>Confirm Password</label>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
