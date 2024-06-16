@@ -18,6 +18,11 @@ namespace EnterpriseProject.Controllers
         public IActionResult Index()
         {
             var users = _context.Users?.ToList();
+            var listingCount = _context.Listings.Count();
+                
+            ViewData["UserCount"] = users.Count;
+            ViewData["ListingCount"] = listingCount;
+            
             return View(users );
         }
 

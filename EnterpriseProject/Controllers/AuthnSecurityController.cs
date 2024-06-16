@@ -121,6 +121,15 @@ namespace EnterpriseProject.Controllers
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            };
+            
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             
             return RedirectToAction("Index", "Home");
         }
