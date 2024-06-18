@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PictureUrl)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -44,9 +41,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                <img src="~/images/@item.PictureUrl" class="rounded-circle" width="50" height="50" asp-append-version="true"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
