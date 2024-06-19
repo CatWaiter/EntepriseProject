@@ -14,12 +14,24 @@ namespace EnterpriseMarketplace
         {
             InitializeComponent();
             _apiService = new ApiService();
+            VerificationCheckBox.CheckedChanged += OnVerificationChecked;
+        }
+
+        private void OnVerificationChecked(object sender, CheckedChangedEventArgs e)
+        {
+            SignInButton.IsEnabled = e.Value;
         }
 
         private async void OnSignInButtonClicked(object sender, EventArgs e)
         {
             var username = UsernameEntry.Text;
             var password = PasswordEntry.Text;
+
+            if (!VerificationCheckBox.IsChecked)
+            {
+                await DisplayAlert("Verification Required", "Please complete the verification.", "OK");
+                return;
+            }
 
             try
             {

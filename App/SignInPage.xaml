@@ -7,10 +7,11 @@
     <StackLayout Padding="10">
         <Entry x:Name="UsernameEntry" Placeholder="Username" />
         <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
+        <CheckBox x:Name="VerificationCheckBox" />
+        <Label Text="I am not a robot" VerticalOptions="Center" HorizontalOptions="Center"/>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
-            <Button Text="Sign In" Clicked="OnSignInButtonClicked" WidthRequest="100" x:Name="SignInButton" Style="{StaticResource ButtonStyle}" />
+            <Button x:Name="SignInButton" Text="Sign In" Clicked="OnSignInButtonClicked" WidthRequest="100" IsEnabled="False" Style="{StaticResource ButtonStyle}" />
             <Button Text="Register" Clicked="OnRegisterButtonClicked" WidthRequest="100" Style="{StaticResource ButtonStyle}" />
         </StackLayout>
     </StackLayout>
-
 </ContentPage>

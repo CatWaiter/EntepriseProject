@@ -7,7 +7,6 @@
         <Label Text="Create Listing" FontSize="Large" HorizontalOptions="Center"/>
 
         <Entry x:Name="TitleEntry" Placeholder="Title" />
-        <Button Text="Upload Picture" HorizontalOptions="FillAndExpand"/>
         <Entry x:Name="LocationEntry" Placeholder="Location" />
         <Entry x:Name="PriceEntry" Placeholder="Price" Keyboard="Numeric" />
         <Picker Title="Select Category"

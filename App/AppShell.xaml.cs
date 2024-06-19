@@ -15,6 +15,7 @@ namespace EnterpriseMarketplace
             Routing.RegisterRoute("MyListingsPage", typeof(MyListingsPage));
             Routing.RegisterRoute("CreateListingPage", typeof(CreateListingPage));
             Routing.RegisterRoute("RegisterPage", typeof(RegisterPage));
+            Routing.RegisterRoute("WeatherPage", typeof(WeatherPage));
             DisableFlyout();
             RefreshNavigationBar();
         }

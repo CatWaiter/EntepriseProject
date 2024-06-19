@@ -41,6 +41,13 @@
         <ShellContent ContentTemplate="{DataTemplate local:MyListingsPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Weather"
+            Icon="weather.png"
+            Route="WeatherPage">
+        <ShellContent ContentTemplate="{DataTemplate local:WeatherPage}" />
+    </FlyoutItem>
+
+
     <Shell.TitleView>
         <Grid BackgroundColor="{StaticResource PrimaryColor}">
             <Grid.ColumnDefinitions>
