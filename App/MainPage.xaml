@@ -17,9 +17,6 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="10" BackgroundColor="LightGray" Margin="5">
-                                <Frame HeightRequest="200" WidthRequest="300" HorizontalOptions="Center" VerticalOptions="Start">
-                                    <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
-                                </Frame>
                                 <Label Text="{Binding Title}" FontSize="Medium" FontAttributes="Bold"/>
                                 <Label Text="{Binding Location}" FontSize="Small"/>
                                 <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="Small"/>

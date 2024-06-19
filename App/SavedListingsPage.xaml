@@ -12,7 +12,6 @@
                         <DataTemplate>
                             <Frame CornerRadius="10" Margin="10" BorderColor="#D1D5DB">
                                 <StackLayout>
-                                    <Image Source="{Binding Listing.PictureUrl}" Aspect="AspectFill" HeightRequest="200" />
                                     <Label Text="{Binding Listing.Title}" FontSize="Medium" FontAttributes="Bold" Padding="10,5,10,0"/>
                                     <Label Text="{Binding Listing.Price, StringFormat='{}{0:C}'}" FontSize="Medium" Padding="10,0"/>
                                     <Button Text="Remove" Style="{StaticResource RoundedButton}" Clicked="OnRemoveButtonClicked" HorizontalOptions="Center" Margin="5,0"/>
