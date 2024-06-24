@@ -62,3 +62,43 @@ body {
 .gridContainer {
     padding: 40px 0 40px 0;
 }
+
+.converterRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.converterCol {
+    width: 48%;
+}
+
+.currency {
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding: 10px 10px 10px 0;
+    font-weight: 700;
+}
+
+.currencyInput {
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding: 10px 10px 10px 0;
+    font-weight: 700;
+}
+
+.convertBtn {
+    width: 200px;
+    display: block;
+    padding: 20px;
+    margin: 0 auto;
+    border-radius: 15px;
+    background-color: #258cfb;
+    color: azure;
+    border: 0;
+    cursor: pointer;
+    font-size: 22px;
+    align-self: center;
+}
