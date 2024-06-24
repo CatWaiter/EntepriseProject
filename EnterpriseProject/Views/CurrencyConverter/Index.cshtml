@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Currency Converter";
+}
+
+<div class="jumbotronCardContainer">
+    <div class="currency-converter">
+        <div class="jumbotron">
+            <h2 class="display-4 cardTitle" text-align="left">Currency Converter</h2>
+            <div class="converterRow">
+                <div class="converterCol">
+                    <div class="currencyContainer">
+                        <select class="currency">
+                            <option>Select</option>
+                        </select>
+                        <input type="text" id="input_currency" name="" class="currencyInput">
+                    </div>
+                </div>
+
+                <div class="converterCol">
+                    <div class="exchangeContainer">
+                        <select class="currency">
+                            <option>Select</option>
+                        </select>
+                        <input type="text" id="exchange_currency" name="" class="currencyInput">
+                    </div>
+                </div>
+            </div>
+            <button OnClick="converter()"class="convertBtn">Convert</button>
+        </div>
+    </div>
+    <script src="~/js/converter.js"></script>
+</div>
