@@ -1,0 +1,35 @@
+@model EnterpriseProject.Services.WeatherData
+
+@{
+    ViewData["Title"] = "Weather";
+}
+
+<h1>Weather</h1>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <p>@ViewBag.ErrorMessage</p>
+}
+else if (Model != null && Model.Main != null && Model.Weather != null)
+{
+    <h2>@Model.Name</h2>
+    <div>
+        <strong>Temperature:</strong> @Model.Main.Temp &deg;C
+        <strong>Humidity:</strong> @Model.Main.Humidity%
+    </div>
+    <ul>
+        @foreach(var desc in Model.Weather)
+        {
+            <li>@desc.Main - @desc.Description</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Weather data is not available. Try searching for another city.</p>
+}
+
+<form method="get" asp-action="GetWeather">
+    <input type="text" name="city" placeholder="Enter city name" />
+    <button type="submit">Get Weather</button>
+</form>
