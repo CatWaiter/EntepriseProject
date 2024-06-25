@@ -16,7 +16,7 @@ public class WeatherService : IWeatherService
 
     public async Task<WeatherData> GetCurrentWeatherAsync(string city)
     {
-        string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={_apiKey}";
+        string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={_apiKey}&units=imperial";
         var response = await _httpClient.GetAsync(url);
         var content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
