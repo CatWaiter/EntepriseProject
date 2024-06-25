@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using EnterpriseProject.Context;
 using EnterpriseProject.Data;
+using EnterpriseProject.Models;
+using EnterpriseProject.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
 });
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddTransient<IWeatherService, WeatherService>();
 
 var app = builder.Build();
 
